@@ -2,7 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BookOpen, Award, Settings, Users, Shield } from 'lucide-react';
+import {
+  LayoutDashboard,
+  BookOpen,
+  Award,
+  Settings,
+  Users,
+  Shield,
+} from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 const items = [
@@ -18,17 +25,22 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-56 shrink-0 border-r border-slate-200 bg-white p-4 lg:block">
+    <aside className="hidden w-56 shrink-0 border-r border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-950 lg:block">
       <nav className="space-y-1">
         {items.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;
           return (
-            <Link key={item.href} href={item.href}
+            <Link
+              key={item.href}
+              href={item.href}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium',
-                active ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-100'
-              )}>
+                active
+                  ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
+                  : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
+              )}
+            >
               <Icon className="h-4 w-4" />
               {item.label}
             </Link>

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { Enrollment } from "@/types";
+import { useCallback, useEffect, useState } from 'react';
+import { Enrollment } from '@/types';
 
-const ENROLL_KEY = "learnhub:enrollments";
-const PROFILE_KEY = "learnhub:profile";
+const ENROLL_KEY = 'learnhub:enrollments';
+const PROFILE_KEY = 'learnhub:profile';
 
 export interface DemoProfile {
   name: string;
@@ -16,16 +16,16 @@ export interface DemoProfile {
 }
 
 const DEFAULT_PROFILE: DemoProfile = {
-  name: "Alex Johnson",
-  email: "student@learnhub.demo",
-  bio: "Learning web dev and design.",
-  avatar: "https://i.pravatar.cc/150?img=3",
+  name: 'Alex Johnson',
+  email: 'student@learnhub.demo',
+  bio: 'Learning web dev and design.',
+  avatar: 'https://i.pravatar.cc/150?img=3',
   emailNotifications: true,
   courseReminders: true,
 };
 
 function readObject<T>(key: string, fallback: T): T {
-  if (typeof window === "undefined") return fallback;
+  if (typeof window === 'undefined') return fallback;
   try {
     const raw = localStorage.getItem(key);
     return raw ? ({ ...fallback, ...JSON.parse(raw) } as T) : fallback;
@@ -35,7 +35,7 @@ function readObject<T>(key: string, fallback: T): T {
 }
 
 function readArray<T>(key: string, fallback: T[]): T[] {
-  if (typeof window === "undefined") return fallback;
+  if (typeof window === 'undefined') return fallback;
   try {
     const raw = localStorage.getItem(key);
     const parsed = raw ? JSON.parse(raw) : null;
@@ -46,19 +46,11 @@ function readArray<T>(key: string, fallback: T[]): T[] {
 }
 
 function seed() {
-  if (typeof window === "undefined" || localStorage.getItem(ENROLL_KEY)) return;
+  if (typeof window === 'undefined' || localStorage.getItem(ENROLL_KEY)) return;
   const initial: Enrollment[] = [
-    {
-      courseId: "course-1",
-      enrolledAt: "2024-11-15",
-      completedLessonIds: ["c1-l1", "c1-l2", "c1-l3"],
-    },
-    {
-      courseId: "course-2",
-      enrolledAt: "2024-12-01",
-      completedLessonIds: ["c2-l1", "c2-l2"],
-    },
-    { courseId: "course-6", enrolledAt: "2024-10-20", completedLessonIds: [] },
+    { courseId: 'course-1', enrolledAt: '2024-11-15', completedLessonIds: ['c1-l1', 'c1-l2', 'c1-l3'] },
+    { courseId: 'course-2', enrolledAt: '2024-12-01', completedLessonIds: ['c2-l1', 'c2-l2'] },
+    { courseId: 'course-6', enrolledAt: '2024-10-20', completedLessonIds: [] },
   ];
   localStorage.setItem(ENROLL_KEY, JSON.stringify(initial));
 }
@@ -75,37 +67,30 @@ export function useDemoStore() {
     setProfile(readObject<DemoProfile>(PROFILE_KEY, DEFAULT_PROFILE));
     setHydrated(true);
   }, []);
+
   const persist = useCallback((next: Enrollment[]) => {
     setEnrollments(next);
-    if (typeof window !== "undefined")
-      localStorage.setItem(ENROLL_KEY, JSON.stringify(next));
+    if (typeof window !== 'undefined') localStorage.setItem(ENROLL_KEY, JSON.stringify(next));
   }, []);
 
   const isEnrolled = useCallback(
     (id: string) => enrollments.some((e) => e.courseId === id),
-    [enrollments],
+    [enrollments]
   );
 
   const enroll = useCallback(
     (courseId: string) => {
       if (enrollments.some((e) => e.courseId === courseId)) return;
-      persist([
-        ...enrollments,
-        {
-          courseId,
-          enrolledAt: new Date().toISOString(),
-          completedLessonIds: [],
-        },
-      ]);
+      persist([...enrollments, { courseId, enrolledAt: new Date().toISOString(), completedLessonIds: [] }]);
     },
-    [enrollments, persist],
+    [enrollments, persist]
   );
 
   const unenroll = useCallback(
     (courseId: string) => {
       persist(enrollments.filter((e) => e.courseId !== courseId));
     },
-    [enrollments, persist],
+    [enrollments, persist]
   );
 
   const toggleLesson = useCallback(
@@ -120,10 +105,10 @@ export function useDemoStore() {
               ? e.completedLessonIds.filter((id) => id !== lessonId)
               : [...e.completedLessonIds, lessonId],
           };
-        }),
+        })
       );
     },
-    [enrollments, persist],
+    [enrollments, persist]
   );
 
   const setLessonComplete = useCallback(
@@ -132,21 +117,17 @@ export function useDemoStore() {
         enrollments.map((e) => {
           if (e.courseId !== courseId) return e;
           const without = e.completedLessonIds.filter((id) => id !== lessonId);
-          return {
-            ...e,
-            completedLessonIds: complete ? [...without, lessonId] : without,
-          };
-        }),
+          return { ...e, completedLessonIds: complete ? [...without, lessonId] : without };
+        })
       );
     },
-    [enrollments, persist],
+    [enrollments, persist]
   );
 
   const updateProfile = useCallback((patch: Partial<DemoProfile>) => {
     setProfile((prev) => {
       const next = { ...prev, ...patch };
-      if (typeof window !== "undefined")
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(next));
+      if (typeof window !== 'undefined') localStorage.setItem(PROFILE_KEY, JSON.stringify(next));
       return next;
     });
   }, []);

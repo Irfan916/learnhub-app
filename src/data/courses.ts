@@ -1,6 +1,7 @@
 import { Course } from '@/types';
 
-const SAMPLE_VIDEO = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+const SAMPLE_VIDEO =
+  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
 
 const buildCurriculum = (prefix: string, titles: string[]): Course['curriculum'] => {
   const half = Math.ceil(titles.length / 2);

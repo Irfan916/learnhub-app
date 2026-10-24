@@ -1,6 +1,7 @@
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 export type CourseStatus = 'draft' | 'published' | 'pending';
 export type UserRole = 'student' | 'instructor' | 'admin';
+export type ThemeMode = 'light' | 'dark';
 
 export interface LessonResource {
   id: string;

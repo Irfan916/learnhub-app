@@ -4,19 +4,25 @@
 
 @theme {
   --color-brand: #4F46E5;
+  --color-brand-hover: #4338CA;
   --color-navy: #0F172A;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     @apply bg-white text-slate-900 antialiased;
-  }
-  .dark body {
-    @apply bg-slate-950 text-slate-100;
+    @apply dark:bg-slate-950 dark:text-slate-100;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+  *:focus-visible {
+    @apply outline-none ring-2 ring-indigo-500 ring-offset-2;
+    @apply dark:ring-offset-slate-950;
   }
 }

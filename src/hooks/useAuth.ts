@@ -20,11 +20,14 @@ export function useAuth() {
     return u;
   }, []);
 
-  const signUp = useCallback(async (name: string, email: string, password: string, role: UserRole) => {
-    const u = await demoAuthProvider.signUp(name, email, password, role);
-    setUser(u);
-    return u;
-  }, []);
+  const signUp = useCallback(
+    async (name: string, email: string, password: string, role: UserRole) => {
+      const u = await demoAuthProvider.signUp(name, email, password, role);
+      setUser(u);
+      return u;
+    },
+    []
+  );
 
   const signOut = useCallback(async () => {
     await demoAuthProvider.signOut();
